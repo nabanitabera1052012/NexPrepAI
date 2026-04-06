@@ -1,0 +1,740 @@
+
+// ── Variables ─────────────────────────────────
+$black:       #0a0a0a;
+$white:       #fafafa;
+$pink:        #ff3e8a;
+$pink-light:  #ffe0ef;
+$gray:        #6b7280;
+$gray-light:  #9ca3af;
+$border:      #e5e7eb;
+$bg-off:      #f4f4f5;
+$bg-faint:    #f9fafb;
+$dark-card:   #111111;
+$dark-border: #1f1f1f;
+
+// ── Fonts ──────────────────────────────────────
+$font-display: 'Playfair Display', Georgia, serif;
+$font-body:    'DM Sans', sans-serif;
+
+// ── Mixins ─────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin section-pad {
+  padding: 96px 6%;
+}
+
+@mixin fade-up($delay: 0s) {
+  animation: fadeUp 0.7s $delay ease both;
+}
+
+@mixin reveal-base {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+  &.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Keyframes ──────────────────────────────────
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+// ── Reset / Base ───────────────────────────────
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: $font-body;
+  background: $white;
+  color: $black;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// ── Navbar ─────────────────────────────────────
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 6%;
+  background: rgba($white, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid $border;
+
+  &__logo {
+    font-family: $font-display;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+
+    span { color: $pink; }
+  }
+
+  &__links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+
+    @media (max-width: 768px) { display: none; }
+
+    a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      color: $black;
+      transition: color 0.2s;
+
+      &:hover { color: $pink; }
+    }
+  }
+
+  &__cta {
+    background: $black;
+    color: $white;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.15s;
+
+    &:hover {
+      background: $pink;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// ── Section Tag ────────────────────────────────
+.section-tag {
+  display: inline-block;
+  background: $black;
+  color: $white;
+  padding: 5px 14px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+
+  &--pink {
+    background: $pink;
+  }
+}
+
+// ── Hero ───────────────────────────────────────
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 6% 80px;
+  position: relative;
+  overflow: hidden;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba($pink-light, 0.27) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  &__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: $pink-light;
+    color: $pink;
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    @include fade-up(0s);
+
+    &-dot {
+      width: 7px;
+      height: 7px;
+      background: $pink;
+      border-radius: 50%;
+      animation: pulse 1.6s infinite;
+    }
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+    font-weight: 900;
+    line-height: 1.07;
+    letter-spacing: -2px;
+    max-width: 820px;
+    @include fade-up(0.1s);
+    opacity: 0;
+
+    em {
+      font-style: normal;
+      color: $pink;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; left: 0; right: 0;
+        height: 3px;
+        background: $pink;
+        border-radius: 2px;
+      }
+    }
+  }
+
+  &__sub {
+    margin-top: 24px;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: $gray;
+    max-width: 560px;
+    line-height: 1.7;
+    @include fade-up(0.2s);
+    opacity: 0;
+  }
+
+  &__btns {
+    display: flex;
+    gap: 14px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    @include fade-up(0.3s);
+    opacity: 0;
+  }
+
+  &__stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 64px;
+    flex-wrap: wrap;
+    justify-content: center;
+    @include fade-up(0.45s);
+    opacity: 0;
+  }
+
+  &__card {
+    margin-top: 72px;
+    background: $white;
+    border: 1px solid $border;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba($black, 0.08), 0 0 0 1px rgba($pink, 0.08);
+    @include fade-up(0.55s);
+    opacity: 0;
+    text-align: left;
+  }
+}
+
+// ── Stat ───────────────────────────────────────
+.stat {
+  text-align: center;
+
+  &__num {
+    font-family: $font-display;
+    font-size: 2rem;
+    font-weight: 900;
+    color: $pink;
+  }
+
+  &__label {
+    font-size: 0.8rem;
+    color: $gray;
+    margin-top: 2px;
+    letter-spacing: 0.4px;
+  }
+}
+
+// ── Buttons ────────────────────────────────────
+.btn {
+  display: inline-block;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  font-family: $font-body;
+  transition: background 0.2s, transform 0.15s, color 0.2s, border-color 0.2s;
+
+  &--primary {
+    background: $black;
+    color: $white;
+
+    &:hover {
+      background: $pink;
+      transform: translateY(-2px);
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    color: $black;
+    border: 2px solid $black;
+
+    &:hover {
+      border-color: $pink;
+      color: $pink;
+      transform: translateY(-2px);
+    }
+  }
+
+  &--white {
+    background: $white;
+    color: $black;
+
+    &:hover {
+      background: $pink;
+      color: $white;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// ── Mock App Card ──────────────────────────────
+.mock-card {
+  &__top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  &__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    &--pink   { background: $pink; }
+    &--yellow { background: #fbbf24; }
+    &--green  { background: #34d399; }
+  }
+
+  &__label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: $gray;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-left: auto;
+  }
+
+  &__field {
+    background: $bg-off;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 12px;
+
+    strong {
+      color: $black;
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+  }
+
+  &__upload {
+    border: 1.5px dashed $border;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    font-size: 0.82rem;
+    color: $gray;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+
+    &:hover { border-color: $pink; }
+
+    span {
+      display: block;
+      font-size: 0.75rem;
+    }
+  }
+
+  &__divider {
+    display: flex;
+    align-items: center;
+    color: $gray;
+    font-size: 0.78rem;
+    gap: 8px;
+    margin-bottom: 12px;
+
+    &::before, &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: $border;
+    }
+  }
+
+  &__btn {
+    width: 100%;
+    background: $black;
+    color: $white;
+    border: none;
+    padding: 13px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: $font-body;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+
+    &:hover { background: $pink; }
+  }
+}
+
+.match-badge {
+  display: inline-flex;
+  align-items: center;
+  background: $pink-light;
+  color: $pink;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+// ── Features ───────────────────────────────────
+.features {
+  @include section-pad;
+  background: #fafafa;
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    max-width: 680px;
+    margin-top: 8px;
+
+    em {
+      font-style: normal;
+      color: $pink;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: $border;
+    border: 1px solid $border;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 56px;
+    @include reveal-base;
+  }
+}
+
+.feature-card {
+  background: $white;
+  padding: 36px 32px;
+  transition: background 0.2s;
+
+  &:hover { background: $pink-light; }
+
+  &__icon {
+    font-size: 1.8rem;
+    margin-bottom: 18px;
+    display: block;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  &__desc {
+    font-size: 0.88rem;
+    color: $gray;
+    line-height: 1.65;
+  }
+}
+
+// ── How It Works ───────────────────────────────
+.how {
+  @include section-pad;
+  background: $black;
+  color: $white;
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    max-width: 680px;
+    color: $white;
+    margin-top: 8px;
+
+    em {
+      font-style: normal;
+      color: $pink;
+    }
+  }
+
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2px;
+    margin-top: 56px;
+    @include reveal-base;
+  }
+}
+
+.step-card {
+  padding: 40px 32px;
+  border: 1px solid $dark-border;
+  border-radius: 12px;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover {
+    border-color: $pink;
+    background: $dark-card;
+
+    .step-card__num { color: $pink; }
+  }
+
+  &__num {
+    font-family: $font-display;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: $dark-border;
+    line-height: 1;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: $white;
+    margin-bottom: 10px;
+  }
+
+  &__body {
+    font-size: 0.85rem;
+    color: $gray-light;
+    line-height: 1.65;
+  }
+}
+
+// ── API Section ────────────────────────────────
+.api {
+  @include section-pad;
+  background: $white;
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    max-width: 680px;
+    margin-top: 8px;
+
+    em {
+      font-style: normal;
+      color: $pink;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 56px;
+    align-items: start;
+    @include reveal-base;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__group-title {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: $gray;
+    margin-bottom: 12px;
+  }
+
+  &__group {
+    margin-bottom: 28px;
+  }
+
+  &__route {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid $border;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.82rem;
+    font-family: monospace;
+    background: $bg-faint;
+    transition: border-color 0.2s;
+
+    &:hover { border-color: $pink; }
+  }
+
+  &__deploy {
+    background: $pink-light;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 0.82rem;
+    color: $pink;
+    line-height: 1.6;
+
+    strong { display: block; margin-bottom: 4px; }
+
+    code {
+      background: $white;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 0.78rem;
+    }
+  }
+
+  &__code {
+    background: $black;
+    border-radius: 16px;
+    padding: 32px;
+    color: #e5e7eb;
+    font-size: 0.85rem;
+    line-height: 1.8;
+
+    pre {
+      font-family: monospace;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  }
+}
+
+.method-badge {
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: $font-body;
+  flex-shrink: 0;
+
+  &--get  { background: #dcfce7; color: #16a34a; }
+  &--post { background: #dbeafe; color: #1d4ed8; }
+}
+
+// ── CTA ────────────────────────────────────────
+.cta {
+  @include section-pad;
+  background: $black;
+  text-align: center;
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    color: $white;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    max-width: 700px;
+    margin: 0 auto 24px;
+
+    em {
+      font-style: normal;
+      color: $pink;
+    }
+  }
+
+  &__sub {
+    color: $gray-light;
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+}
+
+// ── Footer ─────────────────────────────────────
+.footer {
+  background: $white;
+  border-top: 1px solid $border;
+  padding: 32px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  &__logo {
+    font-family: $font-display;
+    font-weight: 900;
+    font-size: 1.1rem;
+
+    span { color: $pink; }
+  }
+
+  &__copy {
+    font-size: 0.8rem;
+    color: $gray;
+  }
+}
+
+// ── Reveal utility ─────────────────────────────
+.reveal {
+  @include reveal-base;
+}
