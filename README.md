@@ -1,4 +1,4 @@
-# Interview AI (Gemini) — Full Stack
+# NexPrepAI(Gemini) — Full Stack
 
 This repository contains a **React (Vite) frontend** and an **Express + MongoDB backend** that generates an interview preparation plan using **Google Gemini**.
 
